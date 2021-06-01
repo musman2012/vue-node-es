@@ -55,13 +55,26 @@ app.get('/search', function (req, res){
     size: 200,
     from: 0,
     query: {
-      match: {
-          name: req.query['q']
-      }
+          //Recipe: req.query['q']//,
+	  //FLAG: 'END'
+	 bool: {
+      		must: [
+        	{
+          		match: {
+            		Recipe: req.query['q']
+          		}
+        	},
+        	{
+          		match: {
+            		FLAG: "END"
+          		}
+        	}
+      		]
+    	}
     }
   }
   // perform the actual search passing in the index, the search query and the type
-  client.search({index:'scotch.io-tutorial',  body:body, type:'cities_list'})
+  client.search({index:'dev-mw-1',  body:body, type:'_doc'})
   .then(results => {
     res.send(results.hits.hits);
   })

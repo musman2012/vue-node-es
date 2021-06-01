@@ -24,11 +24,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                 <!-- display the city name and country  -->
-                    {{ result._source.name }}, {{ result._source.country }}
+                   {{result._source.Recipe}} -  {{ result._source.Batch_ID}}, {{ result._source.Line }}
                 </div>
                 <div class="panel-body">
                 <!-- display the latitude and longitude of the city  -->
-                    <p>lat:{{ result._source.lat }}, long: {{ result._source.lng }}.</p>
+                    <p>Batch Runtime:{{ result._source.Run_Time }}, Packs Produced: {{ result._source.Total_Packs }}.</p>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@ var app = new Vue({
         // make an axios request to the server with the current search query
 	// here we are calling search function for our app listening at 3001, route for /search is defined in index.js
         search: function() {
-            axios.get("http://18.135.118.116:3001/search?q=" + this.query)
+            axios.get("http://35.177.112.190:3001/search?q=" + this.query)
                 .then(response => {
                     this.results = response.data;
 
