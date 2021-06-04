@@ -13,6 +13,10 @@ const bodyParser = require('body-parser')
 //require the path library
 const path    = require( 'path' );
 
+// indices are being defined here
+MW_DATA_INDEX = 'dev-mw-1'
+PROD_DATA_INDEX = 'dev-prod-1'
+
 // ping the client to be sure Elasticsearch is up
 client.ping({
      requestTimeout: 30000,
@@ -42,7 +46,7 @@ app.use(function(req, res, next) {
 
 // defined the base route and return with an HTML file called tempate.html
 app.get('/', function(req, res){
-  res.sendFile('template.html', {
+  res.sendFile('mw-landing-page.html', {
      root: path.join( __dirname, 'views' )
    });
 })
@@ -74,7 +78,47 @@ app.get('/search', function (req, res){
     }
   }
   // perform the actual search passing in the index, the search query and the type
-  client.search({index:'dev-mw-1',  body:body, type:'_doc'})
+  client.search({index: MW_DATA_INDEX,  body:body, type:'_doc'})
+  .then(results => {
+    res.send(results.hits.hits);
+  })
+  .catch(err=>{
+    console.log(err)
+    res.send([]);
+  });
+
+})
+
+app.get('/search2', function (req, res){
+  // search2 is search by dates
+  // declare the query object to search elastic search and return only 200 results from the first result found.
+  // also match any data where the name is like the query string sent in
+  let body = {
+    size: 200,
+    from: 0,
+    query: {
+          //Recipe: req.query['q']//,
+	  //FLAG: 'END'
+	 bool: {
+      		must: [
+        	{
+          		range: {
+            		TIMESTAMP: {
+                    "gte": "2021-05-03T15:17:00.000Z" //req.date_query['q']
+                }                
+          		}
+        	},
+        	{
+          		match: {
+            		FLAG: "END"
+          		}
+        	}
+      		]
+    	}
+    }
+  }
+  // perform the actual search passing in the index, the search query and the type
+  client.search({index: MW_DATA_INDEX,  body:body, type:'_doc'})
   .then(results => {
     res.send(results.hits.hits);
   })
