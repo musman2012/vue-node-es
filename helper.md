@@ -36,6 +36,17 @@ Then we do `const app = express()` - this is a function that represents express 
 - add require('express') into the code
 
 
+## Vue
+A JavaScript based library to work with Front-end. It used 'directives' to interact with objects of DOM. **v-model** is a directive which is used to binds an input object value to data variable. **v-if** is used as if in other languages and is used when changing data attributes and we want to make a div visible or hide it.
+
+**v-show** works similar but the the div is still being rendered but its display is one. **v-bind:disabled** is usually written as just *:* similarly, **v-on** is also commonly used and it used as **@**. E.g. @keyup.enter. @click etc
+
+A Vue instance attached to a DOM object can have:
+- data
+- methods
+- filters
+- computed
+
 ## NodeJS Challenge
 
 Make a new folder called Calculator on your Desktop
